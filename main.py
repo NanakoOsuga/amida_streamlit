@@ -2,17 +2,16 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
-import os
 
 
 # キャッシュ(再計算をスキップ)
 @st.cache_data()
-def create_and_cache_amida(list, bar_horizontal, font_size, font_color, line_w, h, w, font_path):
-    return create_amida(list, bar_horizontal, font_size, font_color, line_w, h, w, font_path)
+def create_and_cache_amida(list, bar_horizontal, font_color, line_w, h, w):
+    return create_amida(list, bar_horizontal, font_color, line_w, h, w)
 
 
 # あみだくじを作る関数
-def create_amida(list, bar_horizontal, font_size, font_color, line_w, h, w, font_path):
+def create_amida(list, bar_horizontal, font_color, line_w, h, w):
 
     global election
     global width_w
@@ -42,7 +41,7 @@ def create_amida(list, bar_horizontal, font_size, font_color, line_w, h, w, font
     base_img=Image.fromarray(base_img)
 
     # 候補者リストを描写する
-    font = ImageFont.truetype(font_path, font_size)
+    font = ImageFont.truetype("./NotoSansJP-Black.ttf", 50)
     for i in range(bar_vertical):
         ImageDraw.Draw(base_img).text(((i+1)*width_w-12*len(list[i]), 50), list[i], font = font , fill = font_color)
     
@@ -63,19 +62,17 @@ def main_content():
     # ユーザー入力
     list = st.sidebar.text_input("リスト", "AA,BB,CC,DD,EE,FF,GG,HH").split(",")
     bar_horizontal = st.sidebar.slider("横棒の数", 5, 50, 25)
-    font_size = st.sidebar.slider("文字サイズ", 10, 100, 50)
     font_color = st.sidebar.color_picker("文字色を選択", "#FFFFFF")
     line_w = st.sidebar.slider("あみだくじの線の太さ", 1, 10, 5)
     h = st.sidebar.slider("画像の高さ", 300, 3000, 1200)
     w = st.sidebar.slider("画像の幅", 300, 3000, 1200)
-    font_path = st.sidebar.text_input("フォントパス", "C:\Windows\Fonts\HGRPP1.TTC")
 
 
     # picturesのリストを初期化
     pictures = []
 
     # あみだくじの画像を作成
-    amida_img = create_and_cache_amida(list, bar_horizontal, font_size, font_color, line_w, h, w, font_path)
+    amida_img = create_and_cache_amida(list, bar_horizontal, font_color, line_w, h, w)
 
     # picturesにあみだくじの画像を追加
     pictures.append(amida_img)
@@ -131,6 +128,3 @@ def main_content():
  
         # 保存したgifを表示
         st.image('anime.gif', use_column_width=True)
-    
-        # # 一時ファイルを削除
-        # os.remove('temp.gif')
