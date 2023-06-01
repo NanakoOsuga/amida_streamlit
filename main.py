@@ -62,11 +62,11 @@ def main_content():
     # ユーザー入力
     list = st.sidebar.text_input("リスト", "AA,BB,CC,DD,EE,FF,GG,HH").split(",")
     bar_horizontal = st.sidebar.slider("横棒の数", 5, 50, 25)
-    font_color = st.sidebar.color_picker("文字色を選択", "#FFFFFF")
     line_w = st.sidebar.slider("あみだくじの線の太さ", 1, 10, 5)
     h = st.sidebar.slider("画像の高さ", 300, 3000, 1200)
     w = st.sidebar.slider("画像の幅", 300, 3000, 1200)
 
+    font_color = 255
 
     # picturesのリストを初期化
     pictures = []
